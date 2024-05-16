@@ -35,6 +35,7 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.ForgeEventFactory;
+import nonamecrackers2.endertrigon.common.config.EnderTrigonConfig;
 import nonamecrackers2.endertrigon.common.init.EnderTrigonDragonPhases;
 import nonamecrackers2.endertrigon.common.util.EnderDragonHelper;
 
@@ -67,25 +68,28 @@ public class DragonCrashPlayerPhase extends AbstractDragonPhaseInstance implemen
 			if (this.dragon.inWall && ForgeEventFactory.getMobGriefingEvent(this.dragon.level(), this.dragon))
 			{
 				Explosion explosion = this.dragon.level().explode(this.dragon, this.dragon.getX(), this.dragon.getY(), this.dragon.getZ(), 7.0F, Level.ExplosionInteraction.NONE);
-				int radius = 3;
-				for (int x = -radius; x < radius; x++)
+				if (EnderTrigonConfig.COMMON.crashPhaseDestroysBlocks.get())
 				{
-					for (int z = -radius; z < radius; z++)
+					int radius = 3;
+					for (int x = -radius; x < radius; x++)
 					{
-						BlockPos pos = BlockPos.containing(this.dragon.getX() + x, 0.0D, this.dragon.getZ() + z);
-						pos = this.dragon.level().getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, pos).below();
-						BlockState state = this.dragon.level().getBlockState(pos);
-						FluidState fluid = this.dragon.level().getFluidState(pos);
-						ExplosionDamageCalculator calculator = new ExplosionDamageCalculator();
-						Optional<Float> resistance = calculator.getBlockExplosionResistance(explosion, this.dragon.level(), pos, state, fluid);
-						if (resistance.isPresent() && !state.isAir() && resistance.get() < 20.0F && this.dragon.getRandom().nextInt(12) == 0)
+						for (int z = -radius; z < radius; z++)
 						{
-							FallingBlockEntity block = FallingBlockEntity.fall(this.dragon.level(), pos, state);
-							block.time = 560;
-							double xDelta = block.getX() - this.dragon.getX();
-							double zDelta = block.getZ() - this.dragon.getZ();
-							Vec3 delta = new Vec3(xDelta, 3.0D, zDelta).normalize().scale(0.8D);
-							block.setDeltaMovement(delta);
+							BlockPos pos = BlockPos.containing(this.dragon.getX() + x, 0.0D, this.dragon.getZ() + z);
+							pos = this.dragon.level().getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, pos).below();
+							BlockState state = this.dragon.level().getBlockState(pos);
+							FluidState fluid = this.dragon.level().getFluidState(pos);
+							ExplosionDamageCalculator calculator = new ExplosionDamageCalculator();
+							Optional<Float> resistance = calculator.getBlockExplosionResistance(explosion, this.dragon.level(), pos, state, fluid);
+							if (resistance.isPresent() && !state.isAir() && resistance.get() < 20.0F && this.dragon.getRandom().nextInt(12) == 0)
+							{
+								FallingBlockEntity block = FallingBlockEntity.fall(this.dragon.level(), pos, state);
+								block.time = 560;
+								double xDelta = block.getX() - this.dragon.getX();
+								double zDelta = block.getZ() - this.dragon.getZ();
+								Vec3 delta = new Vec3(xDelta, 3.0D, zDelta).normalize().scale(0.8D);
+								block.setDeltaMovement(delta);
+							}
 						}
 					}
 				}

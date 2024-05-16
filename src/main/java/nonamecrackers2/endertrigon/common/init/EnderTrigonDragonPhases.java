@@ -29,7 +29,7 @@ public class EnderTrigonDragonPhases
 		map.put("CrashPlayer", DragonCrashPlayerPhase.class);
 		map.put("DiveBombPlayer", DragonDiveBombPlayerPhase.class);
 	}).build();
-	public static Map<String, EnderDragonPhase<?>> builtPhases;
+	private static Map<String, EnderDragonPhase<?>> builtPhases;
 	
 	public static void register()
 	{

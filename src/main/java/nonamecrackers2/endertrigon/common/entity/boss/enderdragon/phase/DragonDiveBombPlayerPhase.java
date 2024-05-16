@@ -26,6 +26,7 @@ import net.minecraft.world.entity.boss.enderdragon.phases.EnderDragonPhase;
 import net.minecraft.world.entity.item.FallingBlockEntity;
 import net.minecraft.world.phys.Vec3;
 import nonamecrackers2.endertrigon.EnderTrigonMod;
+import nonamecrackers2.endertrigon.common.config.EnderTrigonConfig;
 import nonamecrackers2.endertrigon.common.init.EnderTrigonBlocks;
 import nonamecrackers2.endertrigon.common.init.EnderTrigonDragonPhases;
 import nonamecrackers2.endertrigon.common.init.EnderTrigonSoundEvents;
@@ -33,7 +34,6 @@ import nonamecrackers2.endertrigon.common.util.EnderDragonHelper;
 
 public class DragonDiveBombPlayerPhase extends AbstractDragonPhaseInstance implements TargetPhase
 {
-	private static final int MAX_EGGS = 4;
 	private @Nullable LivingEntity target;
 	private int eggsDropped;
 	
@@ -50,7 +50,7 @@ public class DragonDiveBombPlayerPhase extends AbstractDragonPhaseInstance imple
 			Vec3 target = this.target.position().add(0.0D, 10.0D, 0.0D);
 			EnderDragonHelper.moveUnrestrictedY(this.dragon, target, this.getTurnSpeed(), 0.5F);
 			
-			if (this.eggsDropped < MAX_EGGS)
+			if (this.eggsDropped < EnderTrigonConfig.COMMON.maxBabyEnderDragons.get())
 			{
 				if (this.dragon.position().distanceTo(target) < 8.0D && this.dragon.getRandom().nextInt(8) == 0 || this.dragon.tickCount % 120 == 0)
 				{

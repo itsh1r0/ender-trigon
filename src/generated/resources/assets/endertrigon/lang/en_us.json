@@ -6,10 +6,19 @@
   "endertrigon.subtitle.dragon_lays_egg": "Ender Dragon Lays Egg",
   "entity.endertrigon.baby_ender_dragon": "Baby Ender Dragon",
   "entity.endertrigon.dragon_flame": "Dragon Flame",
+  "gui.endertrigon.config.attacksUntilPerch.description": "Specifies the amount of special attacks, plus the amount of remaining end crystals, the dragon must do until it can potentially perch.\nRange: 1 ~ 16",
+  "gui.endertrigon.config.attacksUntilPerch.title": "Attacks Until Perch",
+  "gui.endertrigon.config.category.enabled_custom_phases.title": "Enabled Custom Phases",
+  "gui.endertrigon.config.crashPhaseDestroysBlocks.description": "Specifies if the crash phase should cause blocks to be flung.",
+  "gui.endertrigon.config.crashPhaseDestroysBlocks.title": "Crash Phase Destroys Blocks",
   "gui.endertrigon.config.enableCrashPlayer.description": "Specifies if this custom dragon phase should be enabled or not",
   "gui.endertrigon.config.enableCrashPlayer.title": "Enable Crash Player",
   "gui.endertrigon.config.enableDiveBombPlayer.description": "Specifies if this custom dragon phase should be enabled or not",
   "gui.endertrigon.config.enableDiveBombPlayer.title": "Enable Dive Bomb Player",
   "gui.endertrigon.config.enableSnatchPlayer.description": "Specifies if this custom dragon phase should be enabled or not",
-  "gui.endertrigon.config.enableSnatchPlayer.title": "Enable Snatch Player"
+  "gui.endertrigon.config.enableSnatchPlayer.title": "Enable Snatch Player",
+  "gui.endertrigon.config.maxBabyEnderDragons.description": "Specifies the max amount of baby ender dragons the Ender Dragon can spawn during its hatching (dive bomb) phase.\nRange: 1 ~ 16",
+  "gui.endertrigon.config.maxBabyEnderDragons.title": "Max Baby Ender Dragons",
+  "gui.endertrigon.config.skipLandingPhase.description": "Specifies if the landing phase should have a much higher chance to be skipped. Makes the fight quicker by avoiding long dull periods where the Ender Dragon is flying for a long time, before it perches.",
+  "gui.endertrigon.config.skipLandingPhase.title": "Skip Landing Phase"
 }
