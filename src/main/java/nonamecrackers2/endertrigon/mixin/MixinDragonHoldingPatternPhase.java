@@ -96,7 +96,7 @@ public abstract class MixinDragonHoldingPatternPhase extends AbstractDragonPhase
 		DragonStrafeExtension strafeExtension = (DragonStrafeExtension)this.dragon.getPhaseManager().getPhase(EnderDragonPhase.STRAFE_PLAYER);
 		int times = strafeExtension.getTimesStrafing();
 		int crystals = this.dragon.getDragonFight() == null ? 0 : this.dragon.getDragonFight().getCrystalsAlive();
-		if (times > 4 + crystals)
+		if (times >= 4 + crystals)
 		{
 			this.dragon.getPhaseManager().setPhase(EnderDragonPhase.LANDING_APPROACH);
 			strafeExtension.setTimesStrafing(0);

@@ -4,7 +4,7 @@ license="All rights reserved"
 
 [[mods]]
 modId="endertrigon"
-version="1.0"
+version="1.20.1-1.1"
 displayName="Ender Trigon"
 #updateJSONURL="https://change.me.example.invalid/updates.json"
 #displayURL="https://change.me.to.your.mods.homepage.example.invalid/"
@@ -36,5 +36,12 @@ For SB737
     modId="minecraft"
     mandatory=true
     versionRange="[1.20.1,1.21)"
+    ordering="NONE"
+    side="BOTH"
+    
+[[dependencies.endertrigon]]
+    modId="crackerslib"
+    mandatory=true
+    versionRange="[1.20.1-0.3.2.1,)"
     ordering="NONE"
     side="BOTH"

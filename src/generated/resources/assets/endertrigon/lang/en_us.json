@@ -1,0 +1,15 @@
+{
+  "block.endertrigon.baby_dragon_egg": "Baby Dragon Egg",
+  "death.attack.dragonFlame": "%1$s was incinerated by %2$s",
+  "death.attack.dragonFlame.item": "%1$s was incinerated by %2$s using %3$s",
+  "endertrigon.subtitle.baby_dragon_egg_breaks": "Baby Dragon Egg Breaks",
+  "endertrigon.subtitle.dragon_lays_egg": "Ender Dragon Lays Egg",
+  "entity.endertrigon.baby_ender_dragon": "Baby Ender Dragon",
+  "entity.endertrigon.dragon_flame": "Dragon Flame",
+  "gui.endertrigon.config.enableCrashPlayer.description": "Specifies if this custom dragon phase should be enabled or not",
+  "gui.endertrigon.config.enableCrashPlayer.title": "Enable Crash Player",
+  "gui.endertrigon.config.enableDiveBombPlayer.description": "Specifies if this custom dragon phase should be enabled or not",
+  "gui.endertrigon.config.enableDiveBombPlayer.title": "Enable Dive Bomb Player",
+  "gui.endertrigon.config.enableSnatchPlayer.description": "Specifies if this custom dragon phase should be enabled or not",
+  "gui.endertrigon.config.enableSnatchPlayer.title": "Enable Snatch Player"
+}

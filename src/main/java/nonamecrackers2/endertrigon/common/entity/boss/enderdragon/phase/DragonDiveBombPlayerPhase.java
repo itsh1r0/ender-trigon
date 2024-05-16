@@ -27,10 +27,11 @@ import net.minecraft.world.entity.item.FallingBlockEntity;
 import net.minecraft.world.phys.Vec3;
 import nonamecrackers2.endertrigon.EnderTrigonMod;
 import nonamecrackers2.endertrigon.common.init.EnderTrigonBlocks;
+import nonamecrackers2.endertrigon.common.init.EnderTrigonDragonPhases;
 import nonamecrackers2.endertrigon.common.init.EnderTrigonSoundEvents;
 import nonamecrackers2.endertrigon.common.util.EnderDragonHelper;
 
-public class DragonDiveBombPlayerPhase extends AbstractDragonPhaseInstance
+public class DragonDiveBombPlayerPhase extends AbstractDragonPhaseInstance implements TargetPhase
 {
 	private static final int MAX_EGGS = 4;
 	private @Nullable LivingEntity target;
@@ -81,6 +82,7 @@ public class DragonDiveBombPlayerPhase extends AbstractDragonPhaseInstance
 		this.eggsDropped = 0;
 	}
 	
+	@Override
 	public void setTarget(@Nullable LivingEntity target)
 	{
 		this.target = target;
@@ -89,6 +91,6 @@ public class DragonDiveBombPlayerPhase extends AbstractDragonPhaseInstance
 	@Override
 	public EnderDragonPhase<DragonDiveBombPlayerPhase> getPhase()
 	{
-		return EnderTrigonMod.DIVE_BOMB_PLAYER;
+		return EnderTrigonDragonPhases.<DragonDiveBombPlayerPhase>getPhase("DiveBombPlayer").get();
 	}
 }

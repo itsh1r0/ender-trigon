@@ -35,10 +35,10 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.ForgeEventFactory;
-import nonamecrackers2.endertrigon.EnderTrigonMod;
+import nonamecrackers2.endertrigon.common.init.EnderTrigonDragonPhases;
 import nonamecrackers2.endertrigon.common.util.EnderDragonHelper;
 
-public class DragonCrashPlayerPhase extends AbstractDragonPhaseInstance
+public class DragonCrashPlayerPhase extends AbstractDragonPhaseInstance implements TargetPhase
 {
 	private static final int MAX_CHARGE_TIME = 180;
 	private @Nullable LivingEntity target;
@@ -106,6 +106,7 @@ public class DragonCrashPlayerPhase extends AbstractDragonPhaseInstance
 		this.timeSinceCharge = 0;
 	}
 	
+	@Override
 	public void setTarget(@Nullable LivingEntity target)
 	{
 		this.target = target;
@@ -114,6 +115,6 @@ public class DragonCrashPlayerPhase extends AbstractDragonPhaseInstance
 	@Override
 	public EnderDragonPhase<DragonCrashPlayerPhase> getPhase()
 	{
-		return EnderTrigonMod.CRASH_PLAYER;
+		return EnderTrigonDragonPhases.<DragonCrashPlayerPhase>getPhase("CrashPlayer").get();
 	}
 }

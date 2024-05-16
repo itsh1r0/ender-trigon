@@ -39,6 +39,7 @@ import net.minecraft.world.phys.Vec3;
 import nonamecrackers2.endertrigon.EnderTrigonMod;
 import nonamecrackers2.endertrigon.common.entity.BabyEnderDragon;
 import nonamecrackers2.endertrigon.common.entity.boss.enderdragon.EnderDragonHead;
+import nonamecrackers2.endertrigon.common.init.EnderTrigonDragonPhases;
 import nonamecrackers2.endertrigon.common.util.EnderDragonExtension;
 
 @Mixin(EnderDragon.class)
@@ -136,7 +137,7 @@ public abstract class MixinEnderDragon extends Mob implements EnderDragonExtensi
 	@Override
 	public boolean ignoreExplosion()
 	{
-		return this.getSelf().getPhaseManager().getCurrentPhase().getPhase() == EnderTrigonMod.CRASH_PLAYER;
+		return EnderTrigonDragonPhases.isPhase("CrashPlayer", this.getSelf().getPhaseManager().getCurrentPhase().getPhase());
 	}
 	
 	@Inject(
