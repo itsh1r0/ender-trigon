@@ -24,6 +24,8 @@ import nonamecrackers2.endertrigon.common.entity.BabyEnderDragon;
 
 public class BabyEnderDragonSweepGoal extends BabyEnderDragonMoveTargetGoal
 {
+	private int attackTime;
+	
 	public BabyEnderDragonSweepGoal(BabyEnderDragon dragon)
 	{
 		super(dragon);
@@ -32,7 +34,7 @@ public class BabyEnderDragonSweepGoal extends BabyEnderDragonMoveTargetGoal
 	@Override
 	public boolean canUse()
 	{
-		return this.dragon.getTarget() != null && this.dragon.getPhase() == BabyEnderDragon.AttackPhase.SWOOP;
+		return this.dragon.getTarget() != null && this.dragon.getPhase() == BabyEnderDragon.Phase.SWOOP;
 	}
 	
 	@Override
@@ -66,7 +68,8 @@ public class BabyEnderDragonSweepGoal extends BabyEnderDragonMoveTargetGoal
 	public void stop()
 	{
 		this.dragon.setTarget(null);
-		this.dragon.setPhase(BabyEnderDragon.AttackPhase.CIRCLE);
+		this.dragon.setPhase(BabyEnderDragon.Phase.CIRCLE);
+		this.attackTime = 0;
 	}
 	
 	@Override
@@ -75,17 +78,19 @@ public class BabyEnderDragonSweepGoal extends BabyEnderDragonMoveTargetGoal
 		LivingEntity target = this.dragon.getTarget();
 		if (target != null)
 		{
+			this.attackTime++;
+			
 			this.dragon.setMoveTarget(new Vec3(target.getX(), target.getY(0.5D), target.getZ()));
 			if (this.dragon.getBoundingBox().inflate(0.2D).intersects(target.getBoundingBox()))
 			{
 				this.dragon.doHurtTarget(target);
-				if (this.dragon.getRandom().nextInt(10) == 0)
-					this.dragon.setPhase(BabyEnderDragon.AttackPhase.CIRCLE);
+				if (this.dragon.getRandom().nextInt(20) == 0 || this.attackTime > 80)
+					this.dragon.setPhase(BabyEnderDragon.Phase.CIRCLE);
 				this.dragon.playSound(SoundEvents.ENDER_DRAGON_GROWL, 2.0F, this.dragon.getVoicePitch());
 			}
 			else if (this.dragon.horizontalCollision)
 			{
-				this.dragon.setPhase(BabyEnderDragon.AttackPhase.CIRCLE);
+				this.dragon.setPhase(BabyEnderDragon.Phase.CIRCLE);
 			}
 		}
 	}

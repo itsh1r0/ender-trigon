@@ -17,10 +17,9 @@
 
 package nonamecrackers2.endertrigon;
 
+import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
@@ -35,6 +34,7 @@ import nonamecrackers2.endertrigon.common.init.EnderTrigonBlockEntityTypes;
 import nonamecrackers2.endertrigon.common.init.EnderTrigonBlocks;
 import nonamecrackers2.endertrigon.common.init.EnderTrigonDragonPhases;
 import nonamecrackers2.endertrigon.common.init.EnderTrigonEntityTypes;
+import nonamecrackers2.endertrigon.common.init.EnderTrigonInstruments;
 import nonamecrackers2.endertrigon.common.init.EnderTrigonItems;
 import nonamecrackers2.endertrigon.common.init.EnderTrigonSoundEvents;
 
@@ -57,14 +57,15 @@ public class EnderTrigonMod
 		modBus.addListener(EnderTrigonItems::buildCreativeTabContents);
 		modBus.addListener(EnderTrigonDataEvents::gatherData);
 		modBus.register(EnderTrigonRenderers.class);
-//		ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, EnderTrigonConfig.CLIENT_SPEC);
 		ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, EnderTrigonConfig.COMMON_SPEC);
 	}
 	
 	public void commonSetup(FMLCommonSetupEvent event)
 	{
-		event.enqueueWork(() -> {
+		event.enqueueWork(() -> 
+		{
 			EnderTrigonDragonPhases.register();
+			EnderTrigonInstruments.register();
 		});
 	}
 	
@@ -73,6 +74,12 @@ public class EnderTrigonMod
 		IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
 		modBus.addListener(EnderTrigonClientEvents::registerConfigScreen);
 		modBus.addListener(EnderTrigonClientEvents::registerConfigMenuButton);
+		event.enqueueWork(() ->
+		{
+			ItemProperties.register(EnderTrigonItems.DRAGON_HORN.get(), id("tooting"), (item, level, entity, i) -> {
+		         return entity != null && entity.isUsingItem() && entity.getUseItem() == item ? 1.0F : 0.0F;
+		    });
+		});
 	}
 	
 	public static ResourceLocation id(String path)

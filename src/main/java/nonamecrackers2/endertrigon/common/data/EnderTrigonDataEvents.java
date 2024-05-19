@@ -10,5 +10,7 @@ public class EnderTrigonDataEvents
 	{
 		DataGenerator generator = event.getGenerator();
 		generator.addProvider(event.includeClient(), (DataProvider.Factory<EnderTrigonLangProvider>)EnderTrigonLangProvider::new);
+		generator.addProvider(event.includeClient(), (DataProvider.Factory<EnderTrigonItemModelProvider>)output -> new EnderTrigonItemModelProvider(output, event.getExistingFileHelper()));
+		generator.addProvider(event.includeServer(), (DataProvider.Factory<EnderTrigonRecipeProvider>)EnderTrigonRecipeProvider::new);
 	}
 }

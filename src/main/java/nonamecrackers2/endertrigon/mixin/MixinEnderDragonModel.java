@@ -29,7 +29,6 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.entity.EnderDragonRenderer;
 import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
 import nonamecrackers2.endertrigon.client.renderer.entity.DragonRendererAdditions;
-import nonamecrackers2.endertrigon.common.config.EnderTrigonConfig;
 
 @Mixin(EnderDragonRenderer.DragonModel.class)
 public abstract class MixinEnderDragonModel

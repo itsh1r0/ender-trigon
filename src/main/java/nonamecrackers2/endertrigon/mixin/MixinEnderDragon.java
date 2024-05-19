@@ -36,7 +36,6 @@ import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import nonamecrackers2.endertrigon.EnderTrigonMod;
 import nonamecrackers2.endertrigon.common.entity.BabyEnderDragon;
 import nonamecrackers2.endertrigon.common.entity.boss.enderdragon.EnderDragonHead;
 import nonamecrackers2.endertrigon.common.init.EnderTrigonDragonPhases;

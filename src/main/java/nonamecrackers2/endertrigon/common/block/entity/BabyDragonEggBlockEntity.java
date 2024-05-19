@@ -16,12 +16,22 @@
 
 package nonamecrackers2.endertrigon.common.block.entity;
 
+import java.util.UUID;
+
+import javax.annotation.Nullable;
+
+import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.BlockParticleOption;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -37,6 +47,7 @@ import nonamecrackers2.endertrigon.common.init.EnderTrigonSoundEvents;
 public class BabyDragonEggBlockEntity extends BlockEntity
 {
 	private int timeTillSpawn;
+	private @Nullable UUID hatcher;
 	
 	public BabyDragonEggBlockEntity(BlockPos pos, BlockState state)
 	{
@@ -54,6 +65,15 @@ public class BabyDragonEggBlockEntity extends BlockEntity
 				{
 					BabyEnderDragon dragon = EnderTrigonEntityTypes.BABY_ENDER_DRAGON.get().spawn(serverLevel, (ItemStack)null, (Player)null, pos, MobSpawnType.TRIGGERED, true, false);
 					dragon.playSound(SoundEvents.ENDER_DRAGON_GROWL, 3.0F, dragon.getVoicePitch());
+					if (entity.hatcher != null)
+					{
+						dragon.setTame(true);
+						dragon.setOwnerUUID(entity.hatcher);
+						if (((ServerLevel)level).getEntity(entity.hatcher) instanceof ServerPlayer player)
+							CriteriaTriggers.TAME_ANIMAL.trigger(player, dragon);
+						dragon.getAttribute(Attributes.MAX_HEALTH).addPermanentModifier(new AttributeModifier("Tamed health modifier", 16.0D, AttributeModifier.Operation.ADDITION));
+					}
+					serverLevel.sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, state), pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F, 10, 0.5F, 0.5F, 0.5F, 0.05D);
 					level.playSound(null, pos, EnderTrigonSoundEvents.BABY_DRAGON_EGG_BREAKS.get(), SoundSource.BLOCKS, 5.0F, 1.0F);
 					level.setBlock(pos, Blocks.AIR.defaultBlockState(), 2);
 					level.gameEvent(GameEvent.BLOCK_DESTROY, pos, GameEvent.Context.of(state));
@@ -67,6 +87,8 @@ public class BabyDragonEggBlockEntity extends BlockEntity
 	{
 		super.saveAdditional(tag);
 		tag.putInt("TimeTillSpawn", this.timeTillSpawn);
+		if (this.hatcher != null)
+			tag.putUUID("Hatcher", this.hatcher);
 	}
 	
 	@Override
@@ -74,10 +96,17 @@ public class BabyDragonEggBlockEntity extends BlockEntity
 	{
 		super.load(tag);
 		this.timeTillSpawn = tag.getInt("TimeTillSpawn");
+		if (tag.hasUUID("Hatcher"))
+			this.hatcher = tag.getUUID("Hatcher");
 	}
 	
 	public void setTimeTillSpawn(int time)
 	{
 		this.timeTillSpawn = time;
+	}
+	
+	public void setHatcher(@Nullable UUID uuid)
+	{
+		this.hatcher = uuid;
 	}
 }

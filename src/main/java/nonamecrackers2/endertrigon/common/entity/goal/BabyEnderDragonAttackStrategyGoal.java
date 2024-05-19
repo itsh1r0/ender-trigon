@@ -38,26 +38,26 @@ public class BabyEnderDragonAttackStrategyGoal extends Goal
 	public boolean canUse()
 	{
 		LivingEntity target = this.dragon.getTarget();
-		return target != null && this.dragon.canAttack(target, TARGETING);
+		return target != null && this.dragon.canAttack(target, TARGETING) && this.dragon.getPhase() != BabyEnderDragon.Phase.LAND;
 	}
 	
 	@Override
 	public void start()
 	{
 		this.nextAttack = this.adjustedTickDelay(40) + this.dragon.getRandom().nextInt(20);
-		this.dragon.setPhase(BabyEnderDragon.AttackPhase.CIRCLE);
+		this.dragon.setPhase(BabyEnderDragon.Phase.CIRCLE);
 		this.setAnchorAboveTarget();
 	}
 	
 	@Override
 	public void tick()
 	{
-		if (this.dragon.getPhase() == BabyEnderDragon.AttackPhase.CIRCLE)
+		if (this.dragon.getPhase() == BabyEnderDragon.Phase.CIRCLE)
 		{
 			this.nextAttack--;
 			if (this.nextAttack <= 0)
 			{
-				this.dragon.setPhase(BabyEnderDragon.AttackPhase.SWOOP);
+				this.dragon.setPhase(BabyEnderDragon.Phase.SWOOP);
 				this.setAnchorAboveTarget();
 				this.nextAttack = 80 + this.dragon.getRandom().nextInt(60);
 				this.dragon.playSound(SoundEvents.ENDER_DRAGON_AMBIENT, 3.0F, this.dragon.getVoicePitch());

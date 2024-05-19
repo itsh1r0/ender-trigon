@@ -25,7 +25,6 @@ import net.minecraft.world.entity.boss.enderdragon.phases.AbstractDragonPhaseIns
 import net.minecraft.world.entity.boss.enderdragon.phases.EnderDragonPhase;
 import net.minecraft.world.entity.item.FallingBlockEntity;
 import net.minecraft.world.phys.Vec3;
-import nonamecrackers2.endertrigon.EnderTrigonMod;
 import nonamecrackers2.endertrigon.common.config.EnderTrigonConfig;
 import nonamecrackers2.endertrigon.common.init.EnderTrigonBlocks;
 import nonamecrackers2.endertrigon.common.init.EnderTrigonDragonPhases;

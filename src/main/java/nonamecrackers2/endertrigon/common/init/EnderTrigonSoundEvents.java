@@ -29,6 +29,7 @@ public class EnderTrigonSoundEvents
 	
 	public static final RegistryObject<SoundEvent> BABY_DRAGON_EGG_BREAKS = create("baby_dragon_egg_breaks");
 	public static final RegistryObject<SoundEvent> ENDER_DRAGON_LAYS_EGG = create("dragon_lays_egg");
+	public static final RegistryObject<SoundEvent> DRAGON_HORN = create("dragon_horn");
 	
 	public static void register(IEventBus modBus)
 	{

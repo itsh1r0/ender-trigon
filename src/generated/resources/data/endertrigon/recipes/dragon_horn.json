@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "A": {
+      "item": "minecraft:ender_eye"
+    },
+    "~": {
+      "item": "minecraft:goat_horn"
+    }
+  },
+  "pattern": [
+    " A ",
+    "A~A",
+    " A "
+  ],
+  "result": {
+    "item": "endertrigon:dragon_horn"
+  },
+  "show_notification": true
+}
