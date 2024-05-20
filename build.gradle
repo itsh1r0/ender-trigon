@@ -15,7 +15,7 @@ plugins {
 
 apply plugin: 'org.spongepowered.mixin'
 
-version = '1.20.1-1.1'
+version = '1.20.1-1.1-pre'
 group = 'nonamecrackers2.endertrigon' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'endertrigon'
 
