@@ -114,12 +114,13 @@ public class DragonChargeUpPhase extends AbstractDragonSittingPhase
 			this.customPhaseId = customPhaseId;
 		}
 		
-		public <T extends DragonPhaseInstance & TargetPhase> void activate(EnderDragonPhaseManager manager, LivingEntity target)
+		public void activate(EnderDragonPhaseManager manager, LivingEntity target)
 		{
-			@SuppressWarnings("unchecked")
-			var phase = (EnderDragonPhase<T>)EnderTrigonDragonPhases.getPhase(this.customPhaseId).get();
+			var phase = EnderTrigonDragonPhases.getPhase(this.customPhaseId).get();
 			manager.setPhase(phase);
-			manager.getPhase(phase).setTarget(target);
+			var instance = manager.getPhase(phase);
+			if (instance instanceof TargetPhase targetable)
+				targetable.setTarget(target);
 		}
 		
 		public static @Nullable AttackType random(RandomSource random, @Nullable AttackType toExclude)
