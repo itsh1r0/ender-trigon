@@ -139,6 +139,13 @@ repositories {
 	    name "nonamecrackers2Maven"
 	    url "https://maven.nonamecrackers2.dev/releases"
 	}
+	
+	maven {
+        url "https://cursemaven.com"
+        content {
+            includeGroup "curse.maven"
+        }
+    }
 }
 
 dependencies {
@@ -159,6 +166,9 @@ dependencies {
     // For more info...
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
+    
+    // runtimeOnly fg.deobf("curse.maven:cupboard-326652:5170315")
+    // runtimeOnly fg.deobf("curse.maven:savage-ender-dragon-523327:5170099")
     
    	jarJar("nonamecrackers2:crackerslib-forge:1.20.1-0.3.2.1") {
     	jarJar.ranged(it, "[1.20.1-0.3.2.1,)")
