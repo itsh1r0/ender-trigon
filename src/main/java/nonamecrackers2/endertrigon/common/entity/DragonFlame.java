@@ -60,14 +60,15 @@ public class DragonFlame extends AbstractHurtingProjectile
 	protected void onHitEntity(EntityHitResult result)
 	{
 		super.onHitEntity(result);
-		if (!this.level().isClientSide)
+		if (!this.level().isClientSide())
 		{
 			Entity hit = result.getEntity();
 			Entity owner = this.getOwner();
 			if (!this.ownedBy(hit))
 			{
 				int i = hit.getRemainingFireTicks();
-				hit.setSecondsOnFire(8);
+				//TODO: Test
+				hit.igniteForSeconds(8);
 				if (!hit.hurt(flame(this, owner), 8.0F))
 					hit.setRemainingFireTicks(i);
 				else if (owner instanceof LivingEntity living)
@@ -87,10 +88,10 @@ public class DragonFlame extends AbstractHurtingProjectile
 	protected void onHitBlock(BlockHitResult result)
 	{
 		super.onHitBlock(result);
-		if (!this.level().isClientSide)
+		if (!this.level().isClientSide())
 		{
 			Entity owner = this.getOwner();
-			if (!(owner instanceof Mob) || EventHooks.getMobGriefingEvent(this.level(), owner))
+			if (!(owner instanceof Mob) || EventHooks.canEntityGrief(this.level(), owner))
 			{
 				BlockPos pos = result.getBlockPos().relative(result.getDirection());
 				if (this.level().isEmptyBlock(pos))

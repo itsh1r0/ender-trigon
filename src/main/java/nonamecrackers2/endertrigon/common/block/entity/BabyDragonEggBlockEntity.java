@@ -17,6 +17,8 @@
 package nonamecrackers2.endertrigon.common.block.entity;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.HolderLookup.Provider;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
@@ -63,16 +65,16 @@ public class BabyDragonEggBlockEntity extends BlockEntity
 	}
 	
 	@Override
-	protected void saveAdditional(CompoundTag tag)
+	protected void saveAdditional(CompoundTag tag, HolderLookup.Provider provider)
 	{
-		super.saveAdditional(tag);
+		super.saveAdditional(tag, provider);
 		tag.putInt("TimeTillSpawn", this.timeTillSpawn);
 	}
 	
 	@Override
-	public void load(CompoundTag tag)
+	protected void loadAdditional(CompoundTag tag, HolderLookup.Provider provider)
 	{
-		super.load(tag);
+		super.loadAdditional(tag, provider);
 		this.timeTillSpawn = tag.getInt("TimeTillSpawn");
 	}
 	

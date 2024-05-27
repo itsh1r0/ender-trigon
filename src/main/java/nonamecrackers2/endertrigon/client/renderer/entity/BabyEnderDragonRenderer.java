@@ -49,7 +49,7 @@ public class BabyEnderDragonRenderer extends MobRenderer<BabyEnderDragon, BabyEn
 	}
 	
 	@Override
-	protected void setupRotations(BabyEnderDragon dragon, PoseStack stack, float p_115319_, float p_115320_, float partialTicks)
+	protected void setupRotations(BabyEnderDragon dragon, PoseStack stack, float bob, float yBodyRot, float partialTicks, float scale)
 	{
 		float f = (float)dragon.getLatency(7, partialTicks)[0];
 		float f1 = (float)(dragon.getLatency(5, partialTicks)[1] - dragon.getLatency(10, partialTicks)[1]);

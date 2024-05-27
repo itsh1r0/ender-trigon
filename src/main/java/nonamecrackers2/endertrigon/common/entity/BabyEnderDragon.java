@@ -93,7 +93,7 @@ public class BabyEnderDragon extends FlyingMob implements Enemy
 	public void readAdditionalSaveData(CompoundTag tag)
 	{
 		super.readAdditionalSaveData(tag);
-		this.setAnchor(NbtUtils.readBlockPos(tag.getCompound("Anchor")));
+		this.setAnchor(NbtUtils.readBlockPos(tag, "Anchor").orElse(BlockPos.ZERO));
 	}
 	
 	@Override
@@ -215,10 +215,10 @@ public class BabyEnderDragon extends FlyingMob implements Enemy
 	
 	@SuppressWarnings("deprecation")
 	@Override
-	public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType type, SpawnGroupData groupData, CompoundTag data)
+	public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType type, SpawnGroupData groupData)
 	{
 		this.setAnchor(this.blockPosition().above(5));
-		return super.finalizeSpawn(level, difficulty, type, groupData, data);
+		return super.finalizeSpawn(level, difficulty, type, groupData);
 	}
 	
 	private static class DragonLookControl extends LookControl

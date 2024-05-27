@@ -57,13 +57,10 @@ public class DragonFlameRenderer extends EntityRenderer<DragonFlame>
 		stack.scale(2.0F, 2.0F, 2.0F);
 		stack.mulPose(this.entityRenderDispatcher.cameraOrientation());
 		stack.mulPose(Axis.YP.rotationDegrees(180.0F));
-		PoseStack.Pose pose = stack.last();
-		Matrix4f matrix4f = pose.pose();
-		Matrix3f matrix3f = pose.normal();
 		VertexConsumer consumer = buffer.getBuffer(CUTOUT);
-		render(consumer, matrix4f, matrix3f, p_114490_);
+		render(consumer, stack, p_114490_);
 		consumer = buffer.getBuffer(EMISSIVE);
-		render(consumer, matrix4f, matrix3f, p_114490_);
+		render(consumer, stack, p_114490_);
 		stack.popPose();
 		super.render(entity, p_114486_, p_114487_, stack, buffer, p_114490_);
 	}
@@ -74,11 +71,11 @@ public class DragonFlameRenderer extends EntityRenderer<DragonFlame>
 		return TEXTURE_LOCATION;
 	}
 	
-	private static void render(VertexConsumer consumer, Matrix4f matrix4f, Matrix3f matrix3f, int i)
+	private static void render(VertexConsumer consumer, PoseStack stack, int i)
 	{
-		consumer.vertex(matrix4f, -0.5F, -0.25F, 0.0F).color(1.0F, 1.0F, 1.0F, 1.0F).uv(0.0F, 1.0F).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(i).normal(matrix3f, 0.0F, 1.0F, 0.0F).endVertex();
-		consumer.vertex(matrix4f, 0.5F, -0.25F, 0.0F).color(1.0F, 1.0F, 1.0F, 1.0F).uv(1.0F, 1.0F).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(i).normal(matrix3f, 0.0F, 1.0F, 0.0F).endVertex();
-		consumer.vertex(matrix4f, 0.5F, 0.75F, 0.0F).color(1.0F, 1.0F, 1.0F, 1.0F).uv(1.0F, 0.0F).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(i).normal(matrix3f, 0.0F, 1.0F, 0.0F).endVertex();
-		consumer.vertex(matrix4f, -0.5F, 0.75F, 0.0F).color(1.0F, 1.0F, 1.0F, 1.0F).uv(0.0F, 0.0F).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(i).normal(matrix3f, 0.0F, 1.0F, 0.0F).endVertex();
+		consumer.vertex(stack.last().pose(), -0.5F, -0.25F, 0.0F).color(1.0F, 1.0F, 1.0F, 1.0F).uv(0.0F, 1.0F).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(i).normal(stack.last(), 0.0F, 1.0F, 0.0F).endVertex();
+		consumer.vertex(stack.last().pose(), 0.5F, -0.25F, 0.0F).color(1.0F, 1.0F, 1.0F, 1.0F).uv(1.0F, 1.0F).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(i).normal(stack.last(), 0.0F, 1.0F, 0.0F).endVertex();
+		consumer.vertex(stack.last().pose(), 0.5F, 0.75F, 0.0F).color(1.0F, 1.0F, 1.0F, 1.0F).uv(1.0F, 0.0F).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(i).normal(stack.last(), 0.0F, 1.0F, 0.0F).endVertex();
+		consumer.vertex(stack.last().pose(), -0.5F, 0.75F, 0.0F).color(1.0F, 1.0F, 1.0F, 1.0F).uv(0.0F, 0.0F).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(i).normal(stack.last(), 0.0F, 1.0F, 0.0F).endVertex();
 	}
 }
