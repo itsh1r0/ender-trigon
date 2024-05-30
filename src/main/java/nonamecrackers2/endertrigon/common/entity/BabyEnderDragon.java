@@ -60,7 +60,6 @@ import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.FlyingAnimal;
 import net.minecraft.world.entity.animal.ShoulderRidingEntity;
-import net.minecraft.world.entity.animal.Wolf;
 import net.minecraft.world.entity.monster.AbstractSkeleton;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.monster.Phantom;
@@ -85,7 +84,7 @@ import nonamecrackers2.endertrigon.common.init.EnderTrigonEntityTypes;
 public class BabyEnderDragon extends ShoulderRidingEntity implements NeutralMob, FlyingAnimal
 {
 	private static final UniformInt PERSISTENT_ANGER_TIME = TimeUtil.rangeOfSeconds(20, 39);
-	private static final EntityDataAccessor<Integer> REMAINING_ANGER_TIME = SynchedEntityData.defineId(Wolf.class, EntityDataSerializers.INT);
+	private static final EntityDataAccessor<Integer> REMAINING_ANGER_TIME = SynchedEntityData.defineId(BabyEnderDragon.class, EntityDataSerializers.INT);
 	private static final EntityDimensions SITTING = EntityDimensions.fixed(0.9F, 0.85F);
 	public float flapTime;
 	public float oFlapTime;
