@@ -22,10 +22,10 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
 import net.minecraft.world.entity.boss.enderdragon.phases.AbstractDragonPhaseInstance;
 import net.minecraft.world.entity.boss.enderdragon.phases.EnderDragonPhase;
-import nonamecrackers2.endertrigon.EnderTrigonMod;
+import nonamecrackers2.endertrigon.common.init.EnderTrigonDragonPhases;
 import nonamecrackers2.endertrigon.common.util.EnderDragonHelper;
 
-public class DragonSnatchPlayerPhase extends AbstractDragonPhaseInstance
+public class DragonSnatchPlayerPhase extends AbstractDragonPhaseInstance implements TargetPhase
 {
 	private static final int MAX_CHARGE_TIME = 240;
 	private @Nullable LivingEntity target;
@@ -47,8 +47,9 @@ public class DragonSnatchPlayerPhase extends AbstractDragonPhaseInstance
 			if (this.target.getBoundingBox().intersects(this.dragon.getBoundingBox()))
 			{
 				this.target.startRiding(this.dragon);
-				this.dragon.getPhaseManager().setPhase(EnderTrigonMod.CARRY_PLAYER);
-				this.dragon.getPhaseManager().getPhase(EnderTrigonMod.CARRY_PLAYER).setTarget(this.target);
+				var phase = EnderTrigonDragonPhases.<DragonCarryPlayerPhase>getPhase("CarryPlayer").orElseThrow(() -> new NullPointerException("CarryPlayer dragon phase should be registered!"));
+				this.dragon.getPhaseManager().setPhase(phase);
+				this.dragon.getPhaseManager().getPhase(phase).setTarget(this.target);
 				return;
 			}
 			if (this.timeSinceCharge > MAX_CHARGE_TIME)
@@ -67,6 +68,7 @@ public class DragonSnatchPlayerPhase extends AbstractDragonPhaseInstance
 		this.timeSinceCharge = 0;
 	}
 	
+	@Override
 	public void setTarget(@Nullable LivingEntity player)
 	{
 		this.target = player;
@@ -81,6 +83,6 @@ public class DragonSnatchPlayerPhase extends AbstractDragonPhaseInstance
 	@Override
 	public EnderDragonPhase<DragonSnatchPlayerPhase> getPhase()
 	{
-		return EnderTrigonMod.SNATCH_PLAYER;
+		return EnderTrigonDragonPhases.<DragonSnatchPlayerPhase>getPhase("SnatchPlayer").get();
 	}
 }

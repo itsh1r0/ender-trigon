@@ -16,9 +16,11 @@
 
 package nonamecrackers2.endertrigon.common.entity.boss.enderdragon.phase;
 
-import java.util.function.BiConsumer;
+import javax.annotation.Nullable;
 
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
@@ -29,19 +31,21 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
 import net.minecraft.world.entity.boss.enderdragon.phases.AbstractDragonSittingPhase;
+import net.minecraft.world.entity.boss.enderdragon.phases.DragonPhaseInstance;
 import net.minecraft.world.entity.boss.enderdragon.phases.EnderDragonPhase;
 import net.minecraft.world.entity.boss.enderdragon.phases.EnderDragonPhaseManager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.feature.EndPodiumFeature;
-import nonamecrackers2.endertrigon.EnderTrigonMod;
+import nonamecrackers2.endertrigon.common.init.EnderTrigonDragonPhases;
 
 public class DragonChargeUpPhase extends AbstractDragonSittingPhase
 {
+	private static final Logger LOGGER = LogManager.getLogger("endertrigon/DragonChargeUpPhase");
 	private static final int CHARGE_UP_TIME = 50;
 	private static final TargetingConditions CHARGE_TARGETING = TargetingConditions.forCombat();
 	private int chargeUpTicks;
-	private DragonChargeUpPhase.AttackType previousAttack = DragonChargeUpPhase.AttackType.CRASH_PLAYER;
+	private @Nullable DragonChargeUpPhase.AttackType previousAttack;
 	
 	public DragonChargeUpPhase(EnderDragon dragon)
 	{
@@ -62,9 +66,9 @@ public class DragonChargeUpPhase extends AbstractDragonSittingPhase
 		this.chargeUpTicks++;
 		if (this.chargeUpTicks > CHARGE_UP_TIME)
 		{
-			if (player != null)
+			DragonChargeUpPhase.AttackType type = DragonChargeUpPhase.AttackType.random(this.dragon.getRandom(), this.previousAttack);
+			if (player != null && type != null)
 			{
-				DragonChargeUpPhase.AttackType type = DragonChargeUpPhase.AttackType.random(this.dragon.getRandom(), this.previousAttack);
 				type.activate(this.dragon.getPhaseManager(), player);
 				this.previousAttack = type;
 			}
@@ -94,45 +98,50 @@ public class DragonChargeUpPhase extends AbstractDragonSittingPhase
 	@Override
 	public EnderDragonPhase<DragonChargeUpPhase> getPhase()
 	{
-		return EnderTrigonMod.CHARGE_UP;
+		return EnderTrigonDragonPhases.<DragonChargeUpPhase>getPhase("ChargeUp").get();
 	}
 	
 	public static enum AttackType
 	{
-		SNATCH_PLAYER((manager, entity) -> 
-		{
-			manager.setPhase(EnderTrigonMod.SNATCH_PLAYER);
-			manager.getPhase(EnderTrigonMod.SNATCH_PLAYER).setTarget(entity);
-		}),
-		CRASH_PLAYER((manager, entity) -> 
-		{
-			manager.setPhase(EnderTrigonMod.CRASH_PLAYER);
-			manager.getPhase(EnderTrigonMod.CRASH_PLAYER).setTarget(entity);
-		}),
-		DIVE_BOMB_PLAYER((manager, entity) ->
-		{
-			manager.setPhase(EnderTrigonMod.DIVE_BOMB_PLAYER);
-			manager.getPhase(EnderTrigonMod.DIVE_BOMB_PLAYER).setTarget(entity);
-		});
+		SNATCH_PLAYER("SnatchPlayer"),
+		CRASH_PLAYER("CrashPlayer"),
+		DIVE_BOMB_PLAYER("DiveBombPlayer");
 		
-		private final BiConsumer<EnderDragonPhaseManager, LivingEntity> consumer;
+		private final String customPhaseId;
 		
-		private AttackType(BiConsumer<EnderDragonPhaseManager, LivingEntity> consumer)
+		private AttackType(String customPhaseId)
 		{
-			this.consumer = consumer;
+			this.customPhaseId = customPhaseId;
 		}
 		
 		public void activate(EnderDragonPhaseManager manager, LivingEntity target)
 		{
-			this.consumer.accept(manager, target);
+			var phase = EnderTrigonDragonPhases.getPhase(this.customPhaseId).get();
+			manager.setPhase(phase);
+			var instance = manager.getPhase(phase);
+			if (instance instanceof TargetPhase targetable)
+				targetable.setTarget(target);
 		}
 		
-		public static AttackType random(RandomSource random, AttackType toExclude)
+		public static @Nullable AttackType random(RandomSource random, @Nullable AttackType toExclude)
 		{
 			AttackType[] types = values();
-			if (ArrayUtils.contains(types, toExclude))
+			for (AttackType type : values())
+			{
+				if (!EnderTrigonDragonPhases.isEnabled(type.customPhaseId))
+					types = ArrayUtils.removeElement(types, type);
+			}
+			LOGGER.debug("Available attacks: ");
+			for (AttackType type : types)
+				LOGGER.debug(type);
+			if (toExclude != null && types.length > 1)
 				types = ArrayUtils.removeElement(types, toExclude);
-			return Util.getRandom(types, random);
+			if (types.length == 1)
+				return types[0];
+			else if (types.length > 1)
+				return Util.getRandom(types, random);
+			else
+				return null;
 		}
 	}
 }

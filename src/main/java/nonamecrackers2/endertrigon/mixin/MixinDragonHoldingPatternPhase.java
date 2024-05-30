@@ -34,6 +34,7 @@ import net.minecraft.world.entity.projectile.DragonFireball;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.feature.EndPodiumFeature;
 import net.minecraft.world.phys.Vec3;
+import nonamecrackers2.endertrigon.common.config.EnderTrigonConfig;
 import nonamecrackers2.endertrigon.common.util.DragonStrafeExtension;
 
 @Mixin(DragonHoldingPatternPhase.class)
@@ -96,9 +97,9 @@ public abstract class MixinDragonHoldingPatternPhase extends AbstractDragonPhase
 		DragonStrafeExtension strafeExtension = (DragonStrafeExtension)this.dragon.getPhaseManager().getPhase(EnderDragonPhase.STRAFE_PLAYER);
 		int times = strafeExtension.getTimesStrafing();
 		int crystals = this.dragon.getDragonFight() == null ? 0 : this.dragon.getDragonFight().getCrystalsAlive();
-		if (times > 4 + crystals)
+		if (times >= EnderTrigonConfig.COMMON.attacksUntilPerch.get() + crystals)
 		{
-			this.dragon.getPhaseManager().setPhase(EnderDragonPhase.LANDING_APPROACH);
+			this.dragon.getPhaseManager().setPhase(EnderTrigonConfig.COMMON.skipLandingPhase.get() ? EnderDragonPhase.LANDING : EnderDragonPhase.LANDING_APPROACH);
 			strafeExtension.setTimesStrafing(0);
 		}
 	}

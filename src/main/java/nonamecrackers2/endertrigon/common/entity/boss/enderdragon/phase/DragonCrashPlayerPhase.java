@@ -35,10 +35,11 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.event.EventHooks;
-import nonamecrackers2.endertrigon.EnderTrigonMod;
+import nonamecrackers2.endertrigon.common.config.EnderTrigonConfig;
+import nonamecrackers2.endertrigon.common.init.EnderTrigonDragonPhases;
 import nonamecrackers2.endertrigon.common.util.EnderDragonHelper;
 
-public class DragonCrashPlayerPhase extends AbstractDragonPhaseInstance
+public class DragonCrashPlayerPhase extends AbstractDragonPhaseInstance implements TargetPhase
 {
 	private static final int MAX_CHARGE_TIME = 180;
 	private @Nullable LivingEntity target;
@@ -67,25 +68,28 @@ public class DragonCrashPlayerPhase extends AbstractDragonPhaseInstance
 			if (this.dragon.inWall && EventHooks.canEntityGrief(this.dragon.level(), this.dragon))
 			{
 				Explosion explosion = this.dragon.level().explode(this.dragon, this.dragon.getX(), this.dragon.getY(), this.dragon.getZ(), 7.0F, Level.ExplosionInteraction.NONE);
-				int radius = 3;
-				for (int x = -radius; x < radius; x++)
+				if (EnderTrigonConfig.COMMON.crashPhaseDestroysBlocks.get())
 				{
-					for (int z = -radius; z < radius; z++)
+					int radius = 3;
+					for (int x = -radius; x < radius; x++)
 					{
-						BlockPos pos = BlockPos.containing(this.dragon.getX() + x, 0.0D, this.dragon.getZ() + z);
-						pos = this.dragon.level().getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, pos).below();
-						BlockState state = this.dragon.level().getBlockState(pos);
-						FluidState fluid = this.dragon.level().getFluidState(pos);
-						ExplosionDamageCalculator calculator = new ExplosionDamageCalculator();
-						Optional<Float> resistance = calculator.getBlockExplosionResistance(explosion, this.dragon.level(), pos, state, fluid);
-						if (resistance.isPresent() && !state.isAir() && resistance.get() < 20.0F && this.dragon.getRandom().nextInt(12) == 0)
+						for (int z = -radius; z < radius; z++)
 						{
-							FallingBlockEntity block = FallingBlockEntity.fall(this.dragon.level(), pos, state);
-							block.time = 560;
-							double xDelta = block.getX() - this.dragon.getX();
-							double zDelta = block.getZ() - this.dragon.getZ();
-							Vec3 delta = new Vec3(xDelta, 3.0D, zDelta).normalize().scale(0.8D);
-							block.setDeltaMovement(delta);
+							BlockPos pos = BlockPos.containing(this.dragon.getX() + x, 0.0D, this.dragon.getZ() + z);
+							pos = this.dragon.level().getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, pos).below();
+							BlockState state = this.dragon.level().getBlockState(pos);
+							FluidState fluid = this.dragon.level().getFluidState(pos);
+							ExplosionDamageCalculator calculator = new ExplosionDamageCalculator();
+							Optional<Float> resistance = calculator.getBlockExplosionResistance(explosion, this.dragon.level(), pos, state, fluid);
+							if (resistance.isPresent() && !state.isAir() && resistance.get() < 20.0F && this.dragon.getRandom().nextInt(12) == 0)
+							{
+								FallingBlockEntity block = FallingBlockEntity.fall(this.dragon.level(), pos, state);
+								block.time = 560;
+								double xDelta = block.getX() - this.dragon.getX();
+								double zDelta = block.getZ() - this.dragon.getZ();
+								Vec3 delta = new Vec3(xDelta, 3.0D, zDelta).normalize().scale(0.8D);
+								block.setDeltaMovement(delta);
+							}
 						}
 					}
 				}
@@ -106,6 +110,7 @@ public class DragonCrashPlayerPhase extends AbstractDragonPhaseInstance
 		this.timeSinceCharge = 0;
 	}
 	
+	@Override
 	public void setTarget(@Nullable LivingEntity target)
 	{
 		this.target = target;
@@ -114,6 +119,6 @@ public class DragonCrashPlayerPhase extends AbstractDragonPhaseInstance
 	@Override
 	public EnderDragonPhase<DragonCrashPlayerPhase> getPhase()
 	{
-		return EnderTrigonMod.CRASH_PLAYER;
+		return EnderTrigonDragonPhases.<DragonCrashPlayerPhase>getPhase("CrashPlayer").get();
 	}
 }

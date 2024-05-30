@@ -26,10 +26,10 @@ import net.minecraft.world.entity.boss.enderdragon.phases.EnderDragonPhase;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.feature.EndPodiumFeature;
 import net.minecraft.world.phys.Vec3;
-import nonamecrackers2.endertrigon.EnderTrigonMod;
+import nonamecrackers2.endertrigon.common.init.EnderTrigonDragonPhases;
 import nonamecrackers2.endertrigon.common.util.EnderDragonHelper;
 
-public class DragonCarryPlayerPhase extends AbstractDragonPhaseInstance
+public class DragonCarryPlayerPhase extends AbstractDragonPhaseInstance implements TargetPhase
 {
 	private @Nullable LivingEntity target;
 	
@@ -57,6 +57,7 @@ public class DragonCarryPlayerPhase extends AbstractDragonPhaseInstance
 		}
 	}
 	
+	@Override
 	public void setTarget(@Nullable LivingEntity entity)
 	{
 		this.target = entity;
@@ -71,6 +72,6 @@ public class DragonCarryPlayerPhase extends AbstractDragonPhaseInstance
 	@Override
 	public EnderDragonPhase<DragonCarryPlayerPhase> getPhase()
 	{
-		return EnderTrigonMod.CARRY_PLAYER;
+		return EnderTrigonDragonPhases.<DragonCarryPlayerPhase>getPhase("CarryPlayer").get();
 	}
 }

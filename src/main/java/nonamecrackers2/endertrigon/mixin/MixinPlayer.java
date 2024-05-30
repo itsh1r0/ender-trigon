@@ -24,7 +24,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
 import net.minecraft.world.entity.boss.enderdragon.phases.EnderDragonPhase;
 import net.minecraft.world.entity.player.Player;
-import nonamecrackers2.endertrigon.EnderTrigonMod;
+import nonamecrackers2.endertrigon.common.init.EnderTrigonDragonPhases;
 
 @Mixin(Player.class)
 public class MixinPlayer
@@ -39,7 +39,7 @@ public class MixinPlayer
 		if (((Player)(Object)this).getVehicle() instanceof EnderDragon dragon)
 		{
 			EnderDragonPhase<?> phase = dragon.getPhaseManager().getCurrentPhase().getPhase();
-			if (phase == EnderTrigonMod.SNATCH_PLAYER || phase == EnderTrigonMod.CARRY_PLAYER)
+			if (EnderTrigonDragonPhases.isPhase("SnatchPlayer", phase) || EnderTrigonDragonPhases.isPhase("CarryPlayer", phase))
 				callback.setReturnValue(false);
 		}
 	}

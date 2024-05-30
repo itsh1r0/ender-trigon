@@ -18,7 +18,10 @@ package nonamecrackers2.endertrigon.mixin;
 
 import javax.annotation.Nullable;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.gen.Accessor;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -29,12 +32,15 @@ import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
 import net.minecraft.world.entity.boss.enderdragon.phases.AbstractDragonPhaseInstance;
 import net.minecraft.world.entity.boss.enderdragon.phases.DragonStrafePlayerPhase;
 import net.minecraft.world.entity.boss.enderdragon.phases.EnderDragonPhase;
-import nonamecrackers2.endertrigon.EnderTrigonMod;
+import nonamecrackers2.endertrigon.common.init.EnderTrigonDragonPhases;
 import nonamecrackers2.endertrigon.common.util.DragonStrafeExtension;
 
 @Mixin(DragonStrafePlayerPhase.class)
 public abstract class MixinDragonStrafePlayerPhase extends AbstractDragonPhaseInstance implements DragonStrafeExtension
 {
+	@Unique
+	private static final Logger LOGGER = LogManager.getLogger("minecraft/DragonStrafePlayerPhase");
+	@Unique
 	private int timesStrafing;
 	
 	private MixinDragonStrafePlayerPhase(EnderDragon dragon)
@@ -54,7 +60,7 @@ public abstract class MixinDragonStrafePlayerPhase extends AbstractDragonPhaseIn
 			int i = this.dragon.getDragonFight() == null ? 0 : this.dragon.getDragonFight().getCrystalsAlive();
 			if (i == 0 || this.dragon.getRandom().nextInt(i) == 0)
 			{
-				this.dragon.getPhaseManager().setPhase(EnderTrigonMod.CHARGE_UP);
+				this.dragon.getPhaseManager().setPhase(EnderTrigonDragonPhases.getPhase("ChargeUp").orElseThrow(() -> new NullPointerException("ChargeUp dragon phase should be registered!")));
 			}
 			else
 			{
@@ -75,6 +81,7 @@ public abstract class MixinDragonStrafePlayerPhase extends AbstractDragonPhaseIn
 	public void beginHead(CallbackInfo ci)
 	{
 		this.countStrafe();
+		LOGGER.debug("Ender Dragon has strafed {} times", this.getTimesStrafing());
 	}
 	
 	@Override

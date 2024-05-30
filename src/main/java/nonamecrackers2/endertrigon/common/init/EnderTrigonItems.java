@@ -18,17 +18,22 @@ package nonamecrackers2.endertrigon.common.init;
 
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTabs;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Rarity;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import nonamecrackers2.endertrigon.EnderTrigonMod;
+import nonamecrackers2.endertrigon.common.item.DragonHornItem;
+import nonamecrackers2.endertrigon.common.tag.EnderTrigonInstrumentTags;
 
 public class EnderTrigonItems
 {
 	public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(EnderTrigonMod.MODID);
 	
-	public static final DeferredItem<BlockItem> BABY_DRAGON_EGG = ITEMS.registerSimpleBlockItem(EnderTrigonBlocks.BABY_DRAGON_EGG);
+	public static final DeferredItem<BlockItem> BABY_DRAGON_EGG = ITEMS.register("baby_dragon_egg", () -> new BlockItem(EnderTrigonBlocks.BABY_DRAGON_EGG.get(), new Item.Properties().rarity(Rarity.EPIC)));
+	public static final DeferredItem<DragonHornItem> DRAGON_HORN = ITEMS.register("dragon_horn", () -> new DragonHornItem(new Item.Properties().rarity(Rarity.RARE).stacksTo(1).fireResistant(), EnderTrigonInstrumentTags.DRAGON_HORN));
 	
 	public static void register(IEventBus modBus)
 	{
@@ -38,6 +43,8 @@ public class EnderTrigonItems
 	public static void buildCreativeTabContents(BuildCreativeModeTabContentsEvent event)
 	{
 		if (event.getTabKey() == CreativeModeTabs.SPAWN_EGGS)
-			event.accept(BABY_DRAGON_EGG::get);
+			event.accept(BABY_DRAGON_EGG);
+		else if (event.getTabKey() == CreativeModeTabs.TOOLS_AND_UTILITIES)
+			event.accept(DRAGON_HORN);
 	}
 }

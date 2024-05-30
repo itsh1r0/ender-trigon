@@ -22,5 +22,25 @@
     			"name": "minecraft:entity.turtle.lay_egg"
     		}
     	]
+	},
+	"dragon_horn": 
+	{
+		"category": "player",
+		"subtitle": "endertrigon.subtitle.dragon_horn",
+		"sounds":
+		[
+			{
+				"name": "endertrigon:dragon_horn-01"
+			},
+			{
+				"name": "endertrigon:dragon_horn-02"
+			},
+			{
+				"name": "endertrigon:dragon_horn-03"
+			},
+			{
+				"name": "endertrigon:dragon_horn-04"
+			}
+		]
 	}
 }

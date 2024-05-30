@@ -16,9 +16,18 @@
 
 package nonamecrackers2.endertrigon.common.block;
 
+import java.util.List;
+
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.FallingBlockEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.Item.TooltipContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.DragonEggBlock;
@@ -68,6 +77,19 @@ public class BabyDragonEgg extends DragonEggBlock implements EntityBlock
 	}
 	
 	@Override
+	public void setPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity entity, ItemStack stack)
+	{
+		if (entity instanceof Player player)
+		{
+			if (level.getBlockEntity(pos) instanceof BabyDragonEggBlockEntity blockEntity)
+			{
+				blockEntity.setTimeTillSpawn(30 + player.getRandom().nextInt(20));
+				blockEntity.setHatcher(player.getUUID());
+			}
+		}
+	}
+	
+	@Override
 	public void onLand(Level level, BlockPos pos, BlockState state, BlockState state1, FallingBlockEntity falling)
 	{
 		BlockEntity entity = level.getBlockEntity(pos);
@@ -88,5 +110,11 @@ public class BabyDragonEgg extends DragonEggBlock implements EntityBlock
 	protected static <T extends BlockEntity> BlockEntityTicker<T> castTicker(BlockEntityTicker<BabyDragonEggBlockEntity> ticker)
 	{
 		return (BlockEntityTicker<T>)ticker;
+	}
+	
+	@Override
+	public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> text, TooltipFlag flag)
+	{
+		text.add(Component.translatable("block.endertrigon.baby_dragon_egg.use").withStyle(ChatFormatting.GRAY));
 	}
 }

@@ -11,6 +11,11 @@ group = mod_group_id
 
 repositories {
     mavenLocal()
+    
+    maven {
+	    name "nonamecrackers2Maven"
+	    url "https://maven.nonamecrackers2.dev/snapshots"
+	}
 }
 
 base {
@@ -51,30 +56,37 @@ sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 dependencies {
     implementation "net.neoforged:neoforge:${neo_version}"
+    
+    jarJar("nonamecrackers2:crackerslib-neoforge:${crackerslib_version}") {
+    	jarJar.ranged(it, "${crackerslib_version_range}")
+    }
+    
+    implementation "nonamecrackers2:crackerslib-neoforge:${crackerslib_version}"
 }
 
 tasks.withType(ProcessResources).configureEach {
     var replaceProperties = [
-            minecraft_version      : minecraft_version,
-            minecraft_version_range: minecraft_version_range,
-            neo_version            : neo_version,
-            neo_version_range      : neo_version_range,
-            loader_version_range   : loader_version_range,
-            mod_id                 : mod_id,
-            mod_name               : mod_name,
-            mod_license            : mod_license,
-            mod_version            : mod_version,
-            mod_authors            : mod_authors,
-            mod_description        : mod_description
+            minecraft_version         : minecraft_version,
+            minecraft_version_range   : minecraft_version_range,
+            neo_version               : neo_version,
+            neo_version_range         : neo_version_range,
+            loader_version_range      : loader_version_range,
+            mod_id                    : mod_id,
+            mod_name                  : mod_name,
+            mod_license               : mod_license,
+            mod_version               : mod_version,
+            mod_authors               : mod_authors,
+            mod_description           : mod_description,
+            crackerslib_version_range : crackerslib_version_range
     ]
     inputs.properties replaceProperties
 
-    filesMatching(['META-INF/neoforge.mods.toml', 'pack.mcmeta']) {
+    filesMatching(['META-INF/neoforge.mods.toml']) {
         expand replaceProperties + [project: project]
     }
     
     //For Eclipse
-    var resourceTargets = ['META-INF/neoforge.mods.toml', 'pack.mcmeta']
+    var resourceTargets = ['META-INF/neoforge.mods.toml']
     var intoTargets = ["$rootDir/bin/main/"]
     intoTargets.each { target ->
         if (file(target).exists()) {
