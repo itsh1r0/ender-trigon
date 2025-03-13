@@ -279,7 +279,7 @@ public class BabyEnderDragon extends ShoulderRidingEntity implements NeutralMob,
 	public void onFlap()
 	{
 		if (this.level().isClientSide && !this.isSilent())
-			this.level().playLocalSound(this.getX(), this.getY(), this.getZ(), SoundEvents.ENDER_DRAGON_FLAP, this.getSoundSource(), 5.0F, 1.7F + this.random.nextFloat() * 0.3F, false);
+			this.level().playLocalSound(this.getX(), this.getY(), this.getZ(), SoundEvents.ENDER_DRAGON_FLAP, this.getSoundSource(), 1.0F, 1.7F + this.random.nextFloat() * 0.3F, false);
 	}
 	
 	public double[] getLatency(int pointer, float partialTicks)
